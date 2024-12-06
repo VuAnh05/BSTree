@@ -1,49 +1,56 @@
 public class BSTree {
     private TreeNode root;
 
+    public TreeNode insert(TreeNode root, int data) {
+        if (root == null) {
+            return root;
+        }
+
+        if (data > root.data) {
+            root.right = insert(root.right, data);
+        } else if (data < root.data) {
+            root.left = insert(root.left, data);
+        }
+        return root;
+    }
+
     public void insert(int data) {
         root = insert(root, data);
     }
 
-    public TreeNode insert(TreeNode root, int data) {
-        if (root == null) {
-            root = new TreeNode(data);
+    public TreeNode search(TreeNode root, int key) {
+        if (root == null || key == root.data) {
             return root;
         }
-
-        if (data < root.data) {
-            root.left = insert(root.left, data);
-        } else if (data > root.data) {
-            root.right = insert(root.right, data);
+        if (key > root.data) {
+            return search(root.right, key);
+        } else if (key < root.data) {
+            return search(root.left, key);
         }
-        return root;
+        return null;
     }
 
     public TreeNode search(int key) {
         return search(root, key);
     }
 
-    public TreeNode search(TreeNode root, int key) {
-        if (root == null || root.data == key) {
-            return root;
-        }
-        if (key < root.data) {
-            return search(root.left, key);
-        } else if (key > root.data) {
-            return search(root.right, key);
-        }
-        return null;
-    }
-
-    private int maxValue(TreeNode root) {
+    private int maxValue(TreeNode root){
         int maxValue = root.data;
-        while (root.right != null) {
+        while ( root.right != null){
             maxValue = root.right.data;
             root = root.right;
         }
         return maxValue;
     }
 
+    private int minValue(TreeNode root){
+        int minValue = root.data;
+        while ( root.left != null){
+            minValue = root.left.data;
+            root = root.left;
+        }
+        return minValue;
+    }
     public void delele(int key) {
         root = delete(root, key);
     }
@@ -64,14 +71,14 @@ public class BSTree {
             } else if (root.right == null) {
                 return root.left;
             }
-            root.data = maxValue(root.left);
-            root.left = delete(root.left, root.data);
+            root.data = minValue(root.right);
+            root.right = delete(root.right, root.data);
         }
         return root;
     }
 
-    public void inOrder(TreeNode root){
-        if ( root == null){
+    public void inOrder(TreeNode root) {
+        if (root == null) {
             return;
         }
 
