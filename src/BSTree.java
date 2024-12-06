@@ -19,6 +19,10 @@ public class BSTree {
         return root;
     }
 
+    public TreeNode search(int key) {
+        return search(root, key);
+    }
+
     public TreeNode search(TreeNode root, int key) {
         if (root == null || root.data == key) {
             return root;
@@ -28,6 +32,53 @@ public class BSTree {
         } else if (key > root.data) {
             return search(root.right, key);
         }
+        return null;
+    }
+
+    private int maxValue(TreeNode root) {
+        int maxValue = root.data;
+        while (root.right != null) {
+            maxValue = root.right.data;
+            root = root.right;
+        }
+        return maxValue;
+    }
+
+    public void delele(int key) {
+        root = delete(root, key);
+    }
+
+    public TreeNode delete(TreeNode root, int key) {
+        // TH0: Neu cay rong
+        if (root == null) {
+            return root;
+        }
+
+        if (key < root.data) {
+            root.left = delete(root.left, key);
+        } else if (key > root.data) {
+            root.right = delete(root.right, key);
+        } else if (key == root.data) {
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            }
+            root.data = maxValue(root.left);
+            root.left = delete(root.left, root.data);
+        }
         return root;
     }
+
+    public void inOrder(TreeNode root){
+        if ( root == null){
+            return;
+        }
+
+        inOrder(root.left);
+        System.out.println(root.data);
+        inOrder(root.right);
+
+    }
+
 }
