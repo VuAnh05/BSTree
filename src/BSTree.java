@@ -34,23 +34,24 @@ public class BSTree {
         return search(root, key);
     }
 
-    private int maxValue(TreeNode root){
+    private int maxValue(TreeNode root) {
         int maxValue = root.data;
-        while ( root.right != null){
+        while (root.right != null) {
             maxValue = root.right.data;
             root = root.right;
         }
         return maxValue;
     }
 
-    private int minValue(TreeNode root){
+    private int minValue(TreeNode root) {
         int minValue = root.data;
-        while ( root.left != null){
+        while (root.left != null) {
             minValue = root.left.data;
             root = root.left;
         }
         return minValue;
     }
+
     public void delele(int key) {
         root = delete(root, key);
     }
@@ -88,4 +89,23 @@ public class BSTree {
 
     }
 
+    public void preOrder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        System.out.println(root.data);
+        preOrder(root.left);
+        preOrder(root.right);
+    }
+
+    public void postOrder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        postOrder(root.left);
+        postOrder(root.right);
+        System.out.println(root.data);
+
+    }
 }
