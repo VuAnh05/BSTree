@@ -1,74 +1,111 @@
-
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.Comparator;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/**
- *
- * @author ADMIN
- */
-public class MyString implements IString {
+// Lớp Flower
+class Flower {
+    private String name;
+    private double price;
+    private String color;
 
-    @Override
-    public int f1(String string) {
-        int dem = 0;
-        string = string.toLowerCase();
-        String[] k = string.trim().split("\\s+");
-        for (String x : k) {
-            int cnt = 0;
-            for (int i = 0; i < x.length(); i++) {
-                if (x.charAt(i) != 'u' && x.charAt(i) != 'e' && x.charAt(i) != 'o'
-                        && x.charAt(i) != 'a' && x.charAt(i) != 'i') {
-                    cnt++;
-                }
-            }
-            if (cnt >= 2) {
-                dem++;
-            }
-        }
-        return dem;
-    }
-    @Override
-    public String f2(String string) {
-        string = string.toLowerCase();
-        String[] k = string.trim().split("\\s+");
-        HashMap<Character, Integer> map = new HashMap<>();
-        for (String x : k) {
-            for (int i = 0; i < x.length(); i++) {
-                if (map.containsKey(x.charAt(i))) {
-                    map.put(x.charAt(i), map.get(x.charAt(i)) + 1);
-                } else {
-                    map.put(x.charAt(i), 1);
-                }
-            }
-        }
-        int dem = 0;
-        StringBuilder sb = new StringBuilder();
-        Set<Map.Entry<Character, Integer>> entrySet = map.entrySet();
-        for (Map.Entry<Character, Integer> entry : entrySet) {
-            if ( entry.getValue() >= 2){
-                sb.append(entry.getKey());
-                dem++;
-            }
-        }
-        if ( dem != 0){
-             char[] a = sb.toString().toCharArray();
-        Arrays.sort(a);
-        String res = String.valueOf(a);
-        StringBuilder sb1 = new StringBuilder(res);
-        return sb1.reverse().toString();
-        }
-        else{
-            return "NO";
-        }      
+    public Flower(String name, double price, String color) {
+        this.name = name;
+        this.price = price;
+        this.color = color;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    @Override
+    public String toString() {
+        return "Flower{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", color='" + color + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Flower flower = (Flower) obj;
+        return Double.compare(flower.price, price) == 0 &&
+                name.equals(flower.name) &&
+                color.equals(flower.color);
+    }
 }
 
+// Lớp ListFlower
+class ListFlower {
+    private ArrayList<Flower> a;
 
+    public ListFlower() {
+        this.a = new ArrayList<>();
+    }
+
+    // Phương thức thêm mới
+    public void add(Flower flower) {
+        a.add(flower);
+    }
+
+    // Phương thức hiển thị
+    public void display() {
+        for (Flower flower : a) {
+            System.out.println(flower);
+        }
+    }
+
+    // Phương thức sắp xếp giảm dần theo giá
+    public void sort() {
+        Collections.sort(a, new Comparator<Flower>() {
+            @Override
+            public int compare(Flower o1, Flower o2) {
+                return Double.compare(o2.getPrice(), o1.getPrice());
+            }
+        });
+    }
+
+    // Phương thức tìm kiếm
+    public boolean search(Flower flower) {
+        return a.contains(flower);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ListFlower listFlower = new ListFlower();
+
+        // Thêm mới các loại hoa
+        listFlower.add(new Flower("Hoa Hồng", 10000, "Đỏ"));
+        listFlower.add(new Flower("Hoa Cúc", 5000, "Vàng"));
+        listFlower.add(new Flower("Hoa Tulip", 20000, "Đỏ"));
+
+        // Hiển thị danh sách hoa
+        System.out.println("Danh sách hoa:");
+        listFlower.display();
+
+        // Sắp xếp giảm dần theo giá
+        listFlower.sort();
+        System.out.println("\nDanh sách hoa sau khi sắp xếp giảm dần theo giá:");
+        listFlower.display();
+
+        // Tìm kiếm hoa
+        Flower flower = new Flower("Hoa Hồng", 10000, "Đỏ");
+        System.out.println("\nKết quả tìm kiếm hoa 'Hoa Hồng': " + listFlower.search(flower));
+
+        // Tìm kiếm hoa không tồn tại
+        Flower flower2 = new Flower("Hoa Lan", 15000, "Trắng");
+        System.out.println("\nKết quả tìm kiếm hoa 'Hoa Lan': " + listFlower.search(flower2));
+    }
+}
